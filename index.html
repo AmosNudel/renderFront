@@ -46,7 +46,7 @@
             formData.append("file", file);
 
             try {
-                const response = await axios.post("http://localhost:8000/upload_image/", formData, {
+                const response = await axios.post("https://rendersqliteexer.onrender.com/upload_image/", formData, {
                     headers: { "Content-Type": "multipart/form-data" },
                 });
                 console.log("Image uploaded successfully", response.data);
@@ -58,13 +58,13 @@
         // Function to display images in the gallery
         document.getElementById("displayGalleryButton").addEventListener("click", async () => {
             try {
-                const response = await axios.get("http://localhost:8000/images/");
+                const response = await axios.get("https://rendersqliteexer.onrender.com/images/");
                 const gallery = document.getElementById("imageGallery");
                 gallery.innerHTML = ""; // Clear previous gallery
 
                 response.data.forEach(image => {
                     const imgElement = document.createElement("img");
-                    imgElement.src = `http://localhost:8000/uploads/${image.file_path.split('/').pop()}`;
+                    imgElement.src = `https://rendersqliteexer.onrender.com/uploads/${image.file_path.split('/').pop()}`;
                     imgElement.alt = `Image ${image.id}`;
                     imgElement.style.width = "100px"; // Adjust size as needed
                     gallery.appendChild(imgElement);
