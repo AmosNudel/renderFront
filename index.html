@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FastAPI Item API</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
+
 <body>
 
     <h1>FastAPI Item API</h1>
 
     <div>
         <h2>Create Item</h2>
+        <input type="text" id="itemName" placeholder="Enter item name">
+        <input type="text" id="itemDescription" placeholder="Enter item description">
         <button id="createItemButton">Create Item</button>
     </div>
+
 
     <div>
         <h2>Get Item</h2>
@@ -31,9 +36,18 @@
     <script>
         // Function to create an item
         document.getElementById("createItemButton").addEventListener("click", async () => {
+            const itemName = document.getElementById("itemName").value;
+            const itemDescription = document.getElementById("itemDescription").value;
+
+            // Check if both fields are filled out
+            if (!itemName || !itemDescription) {
+                console.error("Please fill out both fields");
+                return;
+            }
+
             const newItem = {
-                name: "New Item",
-                description: "Description of new item"
+                name: itemName,
+                description: itemDescription
             };
 
             try {
@@ -77,4 +91,5 @@
     </script>
 
 </body>
+
 </html>
