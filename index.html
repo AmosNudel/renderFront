@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastAPI Item API</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+    <h1>FastAPI Item API</h1>
+
+    <div>
+        <h2>Create Item</h2>
+        <button id="createItemButton">Create Item</button>
+    </div>
+
+    <div>
+        <h2>Get Item</h2>
+        <input type="number" id="itemId" placeholder="Enter item ID">
+        <button id="getItemButton">Get Item</button>
+        <p id="itemDetail"></p>
+    </div>
+
+    <div>
+        <h2>Get All Items</h2>
+        <button id="getItemsButton">Get All Items</button>
+        <ul id="itemsList"></ul>
+    </div>
+
+    <script>
+        // Function to create an item
+        document.getElementById("createItemButton").addEventListener("click", async () => {
+            const newItem = {
+                name: "New Item",
+                description: "Description of new item"
+            };
+
+            try {
+                const response = await axios.post("https://rendersqliteexer.onrender.com/items/", newItem);
+                console.log("Created item:", response.data);
+            } catch (error) {
+                console.error("Error creating item:", error);
+            }
+        });
+
+        // Function to get a single item by ID
+        document.getElementById("getItemButton").addEventListener("click", async () => {
+            const itemId = document.getElementById("itemId").value;
+
+            if (itemId) {
+                try {
+                    const response = await axios.get(`https://rendersqliteexer.onrender.com/items/${itemId}`);
+                    document.getElementById("itemDetail").textContent = `Item: ${response.data.name}, Description: ${response.data.description}`;
+                } catch (error) {
+                    console.error("Error getting item:", error);
+                    document.getElementById("itemDetail").textContent = "Item not found.";
+                }
+            }
+        });
+
+        // Function to get all items
+        document.getElementById("getItemsButton").addEventListener("click", async () => {
+            try {
+                const response = await axios.get("https://rendersqliteexer.onrender.com/items/");
+                const itemsList = document.getElementById("itemsList");
+                itemsList.innerHTML = ""; // Clear previous list
+                response.data.forEach(item => {
+                    const li = document.createElement("li");
+                    li.textContent = `Name: ${item.name}, Description: ${item.description}`;
+                    itemsList.appendChild(li);
+                });
+            } catch (error) {
+                console.error("Error getting items:", error);
+            }
+        });
+    </script>
+
+</body>
+</html>
