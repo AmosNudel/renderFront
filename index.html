@@ -133,10 +133,11 @@
                 const response = await axios.get("https://rendersqliteexer.onrender.com/images/");
                 const gallery = document.getElementById("imageGallery");
                 gallery.innerHTML = ""; // Clear previous gallery
-
+        
                 response.data.forEach(image => {
                     const imgElement = document.createElement("img");
-                    imgElement.src = `https://rendersqliteexer.onrender.com/${image.file_path}`;
+                    // Update the src to use the FastAPI static path
+                    imgElement.src = `https://rendersqliteexer.onrender.com/uploads/${image.file_path.split('/').pop()}`;
                     imgElement.alt = `Image ${image.id}`;
                     imgElement.style.width = "100px"; // Adjust size as needed
                     gallery.appendChild(imgElement);
