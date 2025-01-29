@@ -19,7 +19,6 @@
         <button id="createItemButton">Create Item</button>
     </div>
 
-
     <div>
         <h2>Get Item</h2>
         <input type="number" id="itemId" placeholder="Enter item ID">
@@ -31,6 +30,20 @@
         <h2>Get All Items</h2>
         <button id="getItemsButton">Get All Items</button>
         <ul id="itemsList"></ul>
+    </div>
+
+    <!-- Section to upload image -->
+    <div>
+        <h2>Upload Image</h2>
+        <input type="file" id="imageUpload">
+        <button id="uploadImageButton">Upload Image</button>
+    </div>
+
+    <!-- Section to display image gallery -->
+    <div>
+        <h2>Image Gallery</h2>
+        <button id="displayGalleryButton">Display Gallery</button>
+        <div id="imageGallery"></div>
     </div>
 
     <script>
@@ -86,6 +99,50 @@
                 });
             } catch (error) {
                 console.error("Error getting items:", error);
+            }
+        });
+
+        // Function to upload an image
+        document.getElementById("uploadImageButton").addEventListener("click", async () => {
+            const fileInput = document.getElementById("imageUpload");
+            const file = fileInput.files[0];
+
+            if (!file) {
+                console.error("Please select an image file");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const response = await axios.post("https://rendersqliteexer.onrender.com/upload_image/", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                });
+                console.log("Image uploaded:", response.data);
+            } catch (error) {
+                console.error("Error uploading image:", error);
+            }
+        });
+
+        // Function to display the image gallery
+        document.getElementById("displayGalleryButton").addEventListener("click", async () => {
+            try {
+                const response = await axios.get("https://rendersqliteexer.onrender.com/images/");
+                const gallery = document.getElementById("imageGallery");
+                gallery.innerHTML = ""; // Clear previous gallery
+
+                response.data.forEach(image => {
+                    const imgElement = document.createElement("img");
+                    imgElement.src = `https://rendersqliteexer.onrender.com/${image.file_path}`;
+                    imgElement.alt = `Image ${image.id}`;
+                    imgElement.style.width = "100px"; // Adjust size as needed
+                    gallery.appendChild(imgElement);
+                });
+            } catch (error) {
+                console.error("Error displaying gallery:", error);
             }
         });
     </script>
